@@ -1,14 +1,7 @@
 #include "options.h"
+#include "utils.c"
 #include <string.h>
 #include <stdlib.h>
-
-void print_error_and_exit(char *error) {
-  if(NULL != error) {
-    printf("Error %s\n", error );
-  }
-
-  exit(-1);
-}
 
 /**
  * Parse options and retrun options struct.
@@ -24,7 +17,7 @@ Options * parse(int argc, char **argv) {
       print_error_and_exit("Failed to allocate memory");
   }
 
-  for (int i = 1; i < argc; i++) {
+  for (int i = 1; NULL != argv && i < argc; i++) {
 
     if (strcmp(argv[i], TIMESTAMP_OPT_SHORT) == 0) {
         if (i++ < argc) {
@@ -42,18 +35,18 @@ Options * parse(int argc, char **argv) {
   }
 
   if (NULL == opt->timestamp_file) {
-    opt->timestamp_file =
-      (char *) malloc( sizeof(DEFAULT_TIMESTAMP_FILE) * sizeof(char));
+    opt->timestamp_file = (char *) malloc( sizeof(DEFAULT_TIMESTAMP_FILE) * sizeof(char));
+    (NULL == opt->timestamp_file) ? print_error_and_exit("Optionparser Error: Can not allocate memory for options"):0;
+    strcpy(opt->timestamp_file, DEFAULT_TIMESTAMP_FILE);
+  }
 
-    opt->output_file =
-      (char *) malloc( sizeof(DEFAULT_OUTPUT_FILE) * sizeof(char));
-
-    if(NULL == opt->timestamp_file || NULL == opt->output_file) {
-      print_error_and_exit("Optionparser Error: Can not allocate memory for options");
-    }
-
+  if(NULL == opt->output_file) {
+    opt->output_file = (char *) malloc( sizeof(DEFAULT_OUTPUT_FILE) * sizeof(char));
+    (NULL == opt->output_file) ? print_error_and_exit("Optionparser Error: Can not allocate memory for options"):0;
+    strcpy(opt->output_file, DEFAULT_OUTPUT_FILE);
   }
 
   printf("Options : timestamp file : %s, output file : %s \n", opt->timestamp_file, opt->output_file);
+
   return opt;
 }
