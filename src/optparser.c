@@ -45,8 +45,5 @@ Options * parse(int argc, char **argv) {
     (NULL == opt->output_file) ? print_error_and_exit("Optionparser Error: Can not allocate memory for options"):0;
     strcpy(opt->output_file, DEFAULT_OUTPUT_FILE);
   }
-
-  printf("Options : timestamp file : %s, output file : %s \n", opt->timestamp_file, opt->output_file);
-
   return opt;
 }

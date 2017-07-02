@@ -9,4 +9,4 @@ build-tests:
 	gcc -o optparser_test optparser_test.c
 
 test: build-tests
-	./optparser_test
+	./optparser_test && ./timestamp_test.sh
